@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mòdul M0227 – Servei en Xarxa</title>
+    <link rel="stylesheet" href="estils_JordiNovo.css">
+</head>
+<body>
+    <header>
+        <h1>Mòdul M0227 – Servei en Xarxa</h1>
+        <p>DHCP, HTTP, DNS y FTP - Haz clic en una carpeta para ver su información</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" data-protocolo="dhcp">DHCP</a></li>
+            <li><a href="#" data-protocolo="http">HTTP</a></li>
+            <li><a href="#" data-protocolo="dns">DNS</a></li>
+            <li><a href="#" data-protocolo="ftp">FTP</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="carpetas-lista">
+            <section class="carpeta" data-protocolo="dhcp">
+                <h2>📁 DHCP</h2>
+            </section>
+            
+            <section class="carpeta" data-protocolo="http">
+                <h2>📁 HTTP</h2>
+            </section>
+            
+            <section class="carpeta" data-protocolo="dns">
+                <h2>📁 DNS</h2>
+            </section>
+            
+            <section class="carpeta" data-protocolo="ftp">
+                <h2>📁 FTP</h2>
+            </section>
+        </div>
+
+        <div id="dhcp-detalle" class="detalle oculto">
+    <h2>DHCP (Dynamic Host Configuration Protocol)</h2>
+    <p><strong>Función:</strong> Asigna direcciones IP dinámicamente a dispositivos en red LAN.</p>
+    <p><strong>Proceso DORA:</strong></p>
+    <ul>
+        <li><strong>Discover</strong> (UDP 67→68): Cliente busca servidor DHCP</li>
+        <li><strong>Offer</strong> (UDP 68→67): Servidor ofrece IP disponible</li>
+        <li><strong>Request</strong> (UDP 67→68): Cliente acepta la oferta</li>
+        <li><strong>Ack</strong> (UDP 68→67): Servidor confirma asignación</li>
+    </ul>
+    <p><strong>Parámetros:</strong> IP, máscara subred, gateway, DNS, tiempo lease.</p>
+    <p><strong>Puertos:</strong> 67 (servidor), 68 (cliente). RFC 2131.</p>
+</div>
+
+
+            <div id="http-detalle" class="detalle oculto">
+    <h2>HTTP (Hypertext Transfer Protocol)</h2>
+    <p><strong>Función:</strong> Comunicación cliente-servidor para recursos web.</p>
+    <p><strong>Métodos principales:</strong></p>
+    <ul>
+        <li><strong>GET:</strong> Solicitar datos (idempotente, cacheable)</li>
+        <li><strong>POST:</strong> Enviar datos al servidor</li>
+        <li><strong>PUT:</strong> Actualizar/crear recurso completo</li>
+        <li><strong>DELETE:</strong> Eliminar recurso</li>
+    </ul>
+    <p><strong>Códigos respuesta:</strong> 200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 404 Not Found, 500 Internal Server Error.</p>
+    <p><strong>Versiones:</strong> HTTP/1.1 (RFC 2616), HTTP/2 (multiplexing), HTTP/3 (QUIC). Puertos 80/443.</p>
+</div>
+
+
+            <div id="dns-detalle" class="detalle oculto">
+    <h2>DNS (Domain Name System)</h2>
+    <p><strong>Función:</strong> Resolución de nombres de dominio → direcciones IP.</p>
+    <p><strong>Jerarquía servidores:</strong></p>
+    <ul>
+        <li><strong>Root servers:</strong> . (13 grupos mundiales)</li>
+        <li><strong>TLD:</strong> .com, .org, .es (ICANN)</li>
+        <li><strong>Autoridad:</strong> ejemplo.com</li>
+        <li><strong>Local:</strong> DNS del ISP/empresa</li>
+    </ul>
+    <p><strong>Registros principales:</strong></p>
+    <ul>
+        <li><strong>A:</strong> IPv4 (ej: 192.0.2.1)</li>
+        <li><strong>AAAA:</strong> IPv6</li>
+        <li><strong>CNAME:</strong> Alias</li>
+        <li><strong>MX:</strong> Servidor mail</li>
+        <li><strong>NS:</strong> Name server</li>
+    </ul>
+    <p><strong>Puertos:</strong> 53 UDP/TCP. Cache TTL configurable.</p>
+</div>
+
+
+            <div id="ftp-detalle" class="detalle oculto">
+    <h2>FTP (File Transfer Protocol)</h2>
+    <p><strong>Función:</strong> Transferencia de archivos cliente-servidor.</p>
+    <p><strong>Canales conexión:</strong></p>
+    <ul>
+        <li><strong>Control:</strong> Puerto 21 TCP (comandos, autenticación)</li>
+        <li><strong>Datos:</strong> Puerto 20 TCP (transferencia archivos)</li>
+    </ul>
+    <p><strong>Modos transferencia:</strong></p>
+    <ul>
+        <li><strong>Activo:</strong> Servidor inicia conexión datos ← cliente</li>
+        <li><strong>Pasivo:</strong> Cliente inicia conexión datos → servidor (firewalls)</li>
+    </ul>
+    <p><strong>Comandos:</strong> USER, PASS, LIST, RETR (download), STOR (upload), PWD, CWD.</p>
+    <p><strong>Modo:</strong> ASCII (texto), Binario (imágenes/ejecutables). RFC 959.</p>
+</div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>Página educativa sobre protocolos de red básicos</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carpetas = document.querySelectorAll('.carpeta');
+            const detalles = document.querySelectorAll('.detalle');
+            const enlacesNav = document.querySelectorAll('nav a[data-protocolo]');
+
+            function mostrarSolo(protocolo) {
+                detalles.forEach(detalle => {
+                    detalle.classList.add('oculto');
+                });
+                
+                const detalleActivo = document.getElementById(protocolo + '-detalle');
+                if (detalleActivo) {
+                    detalleActivo.classList.remove('oculto');
+                }
+
+                carpetas.forEach(c => c.classList.remove('activa'));
+                const carpetaActiva = document.querySelector(`[data-protocolo="${protocolo}"]`);
+                if (carpetaActiva) {
+                    carpetaActiva.classList.add('activa');
+                }
+            }
+
+            carpetas.forEach(carpeta => {
+                carpeta.addEventListener('click', function() {
+                    const protocolo = this.dataset.protocolo;
+                    mostrarSolo(protocolo);
+                });
+            });
+
+            enlacesNav.forEach(enlace => {
+                enlace.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const protocolo = this.dataset.protocolo;
+                    mostrarSolo(protocolo);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
